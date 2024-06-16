@@ -13,6 +13,15 @@ const io = new Server(server, {
   },
 });
 
-server.listen(5000, () => {
-  console.log("Server is Running");
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`); // Log when a user connects
+  socket.on("send_message", (data) => {
+    console.log(data);
+    io.emit("receive_message", data); // Send the received message to all clients
+  });
+});
+
+const PORT = 5000;
+server.listen(PORT, () => {
+  console.log(`Server is Running at: ${PORT}`);
 });
